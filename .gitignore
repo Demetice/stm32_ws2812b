@@ -1,0 +1,13 @@
+*.o
+*.d
+*.crf
+*.hex
+*.axf
+*.map
+
+*.scvd
+*.__i
+*.iex
+*.zip
+*.TMP
+*.orig
