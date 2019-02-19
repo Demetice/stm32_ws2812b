@@ -28,18 +28,23 @@ Project File Date:  02/19/2019
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling main.c...
-..\User\main.c(27): warning:  #223-D: function "USART1_Send_Bytes" declared implicitly
-          USART1_Send_Bytes(buf, 13);
+..\User\main.c(13): warning:  #223-D: function "USART1_DMA_Config" declared implicitly
+      USART1_DMA_Config();
 ..\User\main.c(8): warning:  #177-D: variable "i"  was declared but never referenced
       uint8_t i;    
 ..\User\main.c(9): warning:  #177-D: variable "color"  was declared but never referenced
       uint8_t color[][3] = {{222, 0, 0}};
-..\User\main.c: 3 warnings, 0 errors
+..\User\main.c(10): warning:  #177-D: variable "buf"  was declared but never referenced
+      uint8_t buf[32] = "Hello world.\n";
+..\User\main.c: 4 warnings, 0 errors
 compiling usart1.c...
+..\User\usart1.c(104): warning:  #550-D: variable "Len"  was set but never used
+  uint16_t Len = 0;
+..\User\usart1.c: 1 warning, 0 errors
 linking...
-Program Size: Code=6248 RO-data=244 RW-data=44 ZI-data=1892  
-".\LED.axf" - 0 Error(s), 3 Warning(s).
-Build Time Elapsed:  00:00:01
+Program Size: Code=6408 RO-data=244 RW-data=44 ZI-data=2020  
+".\LED.axf" - 0 Error(s), 5 Warning(s).
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

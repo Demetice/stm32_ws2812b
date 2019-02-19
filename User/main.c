@@ -10,7 +10,7 @@ int main(void)
     uint8_t buf[32] = "Hello world.\n";
     
 	ALL_Config();
-    USART1_Init(115200);
+    USART1_DMA_Config();
     
 //	DMX512_Init();
 

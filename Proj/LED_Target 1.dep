@@ -1,5 +1,5 @@
 Dependencies for Project 'LED', Target 'Target 1': (DO NOT MODIFY !)
-F (..\User\main.c)(0x5C6B6148)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (..\User\main.c)(0x5C6B696F)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (..\User\ALL_Includes.h)(0x5C6B5D22)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
 I (..\System\CMSIS\core_cm0.h)(0x525803DC)
@@ -73,7 +73,7 @@ I (..\My_Lib\LED\led.h)(0x537AE31F)
 I (..\User\dmx512.h)(0x5C6A770B)
 I (..\User\usart.h)(0x5C6B5F2F)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
-F (..\User\usart1.c)(0x5C6B61CD)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\usart1.o --omf_browse .\usart1.crf --depend .\usart1.d)
+F (..\User\usart1.c)(0x5C6B694E)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\usart1.o --omf_browse .\usart1.crf --depend .\usart1.d)
 I (..\User\usart.h)(0x5C6B5F2F)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
