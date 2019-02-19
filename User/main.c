@@ -11,7 +11,7 @@ int main(void)
     ALL_Config();
     USART1_DMA_Config();
     
-    //Timer2_init();
+    Timer2_init();
     //Tim1_init();
     //DMA_Configuration();
 
@@ -23,9 +23,10 @@ int main(void)
         LED_OFF();
         delay_ms(600);
 
-        printf("I'm printf \n");
+        //printf("I'm printf \n");
 
         //WS2812_send(color, 1);
+
     }
 }
 

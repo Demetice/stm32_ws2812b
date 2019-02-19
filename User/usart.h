@@ -9,8 +9,8 @@
 typedef struct 
 {
     unsigned char type; //0x55
-    unsigned char len;
-    unsigned char color[1]; //rgb 排列，大小时 len * 3
+    unsigned char num;
+    unsigned char color[1]; //rgb 排列，大小时 num * 3
     unsigned char chksum;
 }SMART_EYE_LED_S;
 

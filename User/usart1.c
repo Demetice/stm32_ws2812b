@@ -121,7 +121,7 @@ void USART1_IRQHandler(void)
     if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)
     {
         USART1->ICR |= 1<<4; //清除中断
-        DMA_Cmd(DMA1_Channel3,DISABLE);
+        USART_ReceiveData(USART1);
         Len = UART_RX_LEN - DMA_GetCurrDataCounter(DMA1_Channel3);
         USART1_Send_Bytes(Uart_Rx, Len);
 
@@ -129,13 +129,11 @@ void USART1_IRQHandler(void)
         {
             rgb = Uart_Rx[1] << 16 | Uart_Rx[0] << 8 | Uart_Rx[2];
             WS2812_send(&rgb, 1);
-            USART1_Send_Bytes(Uart_Rx, Len);
         }
         
-
-        //设置传输数据长度
+        DMA_Cmd(DMA1_Channel3,DISABLE);
+        DMA_ClearFlag(DMA1_FLAG_GL3);
         DMA_SetCurrDataCounter(DMA1_Channel3,UART_RX_LEN);
-        //打开DMA
         DMA_Cmd(DMA1_Channel3,ENABLE);
     }
 }

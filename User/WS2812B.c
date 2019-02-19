@@ -50,15 +50,10 @@ void Timer2_init(void)
 	/* PWM1 Mode configuration: Channel1 */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = 19;
+	TIM_OCInitStructure.TIM_Pulse = 0;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OC1Init(TIM3, &TIM_OCInitStructure);
-    TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);
-
-//    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-//    NVIC_InitStructure.NVIC_IRQChannelPriority = 1;
-//    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-//    NVIC_Init(&NVIC_InitStructure);
+    //TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);
 		
 	/* configure DMA */
 	/* DMA clock enable */
