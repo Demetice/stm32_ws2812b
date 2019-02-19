@@ -29,9 +29,9 @@ void delay_ms(u16 nms)
 void Delay_Init(u8 SYSCLK)
 {
    SysTick->CTRL &=~BIT(2);//选择外部时钟
-	 SysTick->CTRL &=~BIT(1);//关闭定时器减到0后的中断请求
-	 fac_us = SYSCLK/8;//计算好SysTick加载值
-	 fac_ms = (u16)fac_us*1000;	 
+   SysTick->CTRL &=~BIT(1);//关闭定时器减到0后的中断请求
+   fac_us = SYSCLK/8;//计算好SysTick加载值
+   fac_ms = (u16)fac_us*1000;	 
 }
 
 /****************************************************
