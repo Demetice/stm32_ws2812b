@@ -7,7 +7,7 @@
 //#define WS2812_IN_PIN	PA0
 
 void Timer2_init(void);
-void WS2812_send(uint8_t (*color)[3], uint16_t len);
+void WS2812_send(uint32_t *rgb, uint16_t len);
 
 #endif /* __LED_H */
 

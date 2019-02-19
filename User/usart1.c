@@ -97,24 +97,6 @@ void USART1_DMA_Config()
     NVIC_Init(&NVIC_InitStruct);
 }
 
-
-//串口1接收中断
-void USART1_IRQHandler(void)
-{
-    uint16_t Len = 0;
-    if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)
-    {
-        USART1->ICR |= 1<<4; //清除中断
-        DMA_Cmd(DMA1_Channel3,DISABLE);
-        Len = UART_RX_LEN - DMA_GetCurrDataCounter(DMA1_Channel3);
-            printf("%s", Uart_Rx);
-        //设置传输数据长度
-        DMA_SetCurrDataCounter(DMA1_Channel3,UART_RX_LEN);
-        //打开DMA
-        DMA_Cmd(DMA1_Channel3,ENABLE);
-    }
-}
-
 void USART1_Send_Byte(unsigned char Data) //发送一个字节；
 {
     USART_SendData(USART1,Data);
@@ -130,6 +112,35 @@ void USART1_Send_Bytes(unsigned char *Data, int len) //发送字符串；
         USART1_Send_Byte(Data[i]);
     }
 }
+
+//串口1接收中断
+void USART1_IRQHandler(void)
+{
+    uint32_t rgb = 0;
+    uint16_t Len = 0;
+    if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)
+    {
+        USART1->ICR |= 1<<4; //清除中断
+        DMA_Cmd(DMA1_Channel3,DISABLE);
+        Len = UART_RX_LEN - DMA_GetCurrDataCounter(DMA1_Channel3);
+        USART1_Send_Bytes(Uart_Rx, Len);
+
+        if(Len >= 3)
+        {
+            rgb = Uart_Rx[1] << 16 | Uart_Rx[0] << 8 | Uart_Rx[2];
+            WS2812_send(&rgb, 1);
+            USART1_Send_Bytes(Uart_Rx, Len);
+        }
+        
+
+        //设置传输数据长度
+        DMA_SetCurrDataCounter(DMA1_Channel3,UART_RX_LEN);
+        //打开DMA
+        DMA_Cmd(DMA1_Channel3,ENABLE);
+    }
+}
+
+
 
 //////////////////////////////////////////////////////////////////
 //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  

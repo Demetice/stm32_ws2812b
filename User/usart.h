@@ -6,6 +6,15 @@
 
 #define USART_REC_LEN  			256  	//定义最大接收字节数 256
 
+typedef struct 
+{
+    unsigned char type; //0x55
+    unsigned char len;
+    unsigned char color[1]; //rgb 排列，大小时 len * 3
+    unsigned char chksum;
+}SMART_EYE_LED_S;
+
+
 //如果想串口中断接收，请不要注释以下宏定义
 void USART1_DMA_Config();
 

@@ -1,5 +1,5 @@
 Dependencies for Project 'LED', Target 'Target 1': (DO NOT MODIFY !)
-F (..\User\main.c)(0x5C6B696F)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (..\User\main.c)(0x5C6BBBE5)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (..\User\ALL_Includes.h)(0x5C6B5D22)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
 I (..\System\CMSIS\core_cm0.h)(0x525803DC)
@@ -32,12 +32,12 @@ I (..\ST_Lib\inc\stm32f0xx_misc.h)(0x4F976AF4)
 I (..\User\MyType.h)(0x5C6A6DDC)
 I (..\My_Lib\delay\delay.h)(0x528DC040)
 I (..\My_Lib\LED\led.h)(0x537AE31F)
-I (..\User\WS2812B.h)(0x5C6A8DCD)
+I (..\User\WS2812B.h)(0x5C6BA11F)
 I (..\User\dmx512.h)(0x5C6A770B)
-I (..\User\usart.h)(0x5C6B5F2F)
+I (..\User\usart.h)(0x5C6BBA1C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
-F (..\User\WS2812B.c)(0x5C6B5C86)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\ws2812b.o --omf_browse .\ws2812b.crf --depend .\ws2812b.d)
-I (..\User\WS2812B.h)(0x5C6A8DCD)
+F (..\User\WS2812B.c)(0x5C6BB9EA)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\ws2812b.o --omf_browse .\ws2812b.crf --depend .\ws2812b.d)
+I (..\User\WS2812B.h)(0x5C6BA11F)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
 I (..\System\CMSIS\core_cm0.h)(0x525803DC)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
@@ -71,10 +71,10 @@ I (..\User\ALL_Includes.h)(0x5C6B5D22)
 I (..\User\MyType.h)(0x5C6A6DDC)
 I (..\My_Lib\LED\led.h)(0x537AE31F)
 I (..\User\dmx512.h)(0x5C6A770B)
-I (..\User\usart.h)(0x5C6B5F2F)
+I (..\User\usart.h)(0x5C6BBA1C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
-F (..\User\usart1.c)(0x5C6B694E)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\usart1.o --omf_browse .\usart1.crf --depend .\usart1.d)
-I (..\User\usart.h)(0x5C6B5F2F)
+F (..\User\usart1.c)(0x5C6BBC2B)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\usart1.o --omf_browse .\usart1.crf --depend .\usart1.d)
+I (..\User\usart.h)(0x5C6BBA1C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
 I (..\System\CMSIS\core_cm0.h)(0x525803DC)
@@ -746,9 +746,9 @@ I (..\ST_Lib\inc\stm32f0xx_wwdg.h)(0x4F976AF4)
 I (..\ST_Lib\inc\stm32f0xx_misc.h)(0x4F976AF4)
 I (..\User\MyType.h)(0x5C6A6DDC)
 I (..\My_Lib\delay\delay.h)(0x528DC040)
-I (..\User\WS2812B.h)(0x5C6A8DCD)
+I (..\User\WS2812B.h)(0x5C6BA11F)
 I (..\User\dmx512.h)(0x5C6A770B)
-I (..\User\usart.h)(0x5C6B5F2F)
+I (..\User\usart.h)(0x5C6BBA1C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 F (..\My_Lib\delay\delay.c)(0x5C6A5CCB)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\delay.o --omf_browse .\delay.crf --depend .\delay.d)
 I (..\User\ALL_Includes.h)(0x5C6B5D22)
@@ -783,9 +783,9 @@ I (..\ST_Lib\inc\stm32f0xx_misc.h)(0x4F976AF4)
 I (..\User\MyType.h)(0x5C6A6DDC)
 I (..\My_Lib\delay\delay.h)(0x528DC040)
 I (..\My_Lib\LED\led.h)(0x537AE31F)
-I (..\User\WS2812B.h)(0x5C6A8DCD)
+I (..\User\WS2812B.h)(0x5C6BA11F)
 I (..\User\dmx512.h)(0x5C6A770B)
-I (..\User\usart.h)(0x5C6B5F2F)
+I (..\User\usart.h)(0x5C6BBA1C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 F (..\System\startup\startup_stm32f0xx_ld.s)(0x525803F0)(--cpu Cortex-M0 -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx--pd "__UVISION_VERSION SETA 525"--list .\startup_stm32f0xx_ld.lst --xref -o .\startup_stm32f0xx_ld.o --depend .\startup_stm32f0xx_ld.d)
 F (..\System\CMSIS\core_cm0.h)(0x525803DC)()
