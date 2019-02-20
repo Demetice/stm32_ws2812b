@@ -7,6 +7,7 @@ int main(void)
     uint8_t i;    
     uint32_t color[] = {0x0000bb};
     uint8_t buf[32] = "Hello world.\n";
+    uint8_t rgb[][3] = {{0,0,45},{45,0,0}};
     
     ALL_Config();
     USART1_DMA_Config();
@@ -26,7 +27,7 @@ int main(void)
         //printf("I'm printf \n");
 
         //WS2812_send(color, 1);
-
+        WS2812_send_internal(rgb, 1);
     }
 }
 

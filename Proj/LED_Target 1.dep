@@ -1,5 +1,5 @@
 Dependencies for Project 'LED', Target 'Target 1': (DO NOT MODIFY !)
-F (..\User\main.c)(0x5C6BCCAC)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (..\User\main.c)(0x5C6BE07E)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (..\User\ALL_Includes.h)(0x5C6B5D22)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
 I (..\System\CMSIS\core_cm0.h)(0x525803DC)
@@ -36,7 +36,7 @@ I (..\User\WS2812B.h)(0x5C6BBE9B)
 I (..\User\dmx512.h)(0x5C6A770B)
 I (..\User\usart.h)(0x5C6BD191)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
-F (..\User\WS2812B.c)(0x5C6BBFB4)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\ws2812b.o --omf_browse .\ws2812b.crf --depend .\ws2812b.d)
+F (..\User\WS2812B.c)(0x5C6BDE8F)(-c --cpu Cortex-M0 -g -O0 --apcs=interwork -I ..\ST_Lib\inc -I ..\ST_Lib\src -I ..\System\CMSIS -I ..\System\startup -I ..\User -I ..\My_Lib\delay -I ..\My_Lib\LED-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F0xx-D__UVISION_VERSION="525" -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD -DSTM32F030-o .\ws2812b.o --omf_browse .\ws2812b.crf --depend .\ws2812b.d)
 I (..\User\WS2812B.h)(0x5C6BBE9B)
 I (..\System\CMSIS\stm32f0xx.h)(0x525803F0)
 I (..\System\CMSIS\core_cm0.h)(0x525803DC)

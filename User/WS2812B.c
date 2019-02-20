@@ -95,25 +95,37 @@ void Timer2_init(void)
  * the LED that is the furthest away from the controller (the point where
  * data is injected into the chain)
  */
-void WS2812_send(uint32_t *rgb, uint16_t len)
+void WS2812_send_internal(uint8_t (*color)[3], uint16_t len)
 {
-	int i;
-	uint16_t memaddr;
-	uint16_t buffersize;
-	buffersize = (len*24)+43;	// number of bytes needed is #LEDs * 24 bytes + 42 trailing bytes
-	memaddr = 0;				// reset buffer memory index
+    uint8_t i;
+    uint16_t memaddr;
+    uint16_t buffersize;
+    buffersize = (len*24)+43;   // number of bytes needed is #LEDs * 24 bytes + 42 trailing bytes
+    memaddr = 0;                // reset buffer memory index
 
-	while (len)
-	{	
-    	for(i=23; i>=0; i--) // RED
-		{
-				LED_BYTE_Buffer[memaddr] = ((rgb[len-1]>>i) & 0x1) ? TIMING_ONE:TIMING_ZERO;
-				memaddr++;
-		}
-		len--;
-	}
-
-    LED_BYTE_Buffer[memaddr] = (rgb[0] & 0x1) ? TIMING_ONE:TIMING_ZERO;
+    while (len)
+    {   
+        for(i=0; i<8; i++) // GREEN data
+        {
+            LED_BYTE_Buffer[memaddr] = ((color[len-1][1]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+            memaddr++;
+        }
+        for(i=0; i<8; i++) // RED
+        {
+                LED_BYTE_Buffer[memaddr] = ((color[len-1][0]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+                memaddr++;
+        }
+        for(i=0; i<8; i++) // BLUE
+        {
+                LED_BYTE_Buffer[memaddr] = ((color[len-1][2]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+                memaddr++;
+        }
+        len--;
+    }
+    //===================================================================// 
+    //bug：最后一个周期波形不知道为什么全是高电平，故增加一个波形
+    LED_BYTE_Buffer[memaddr] = ((color[len][2]<<8) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+    //===================================================================// 
 
 	memaddr++;	
 	while(memaddr < buffersize)
@@ -134,4 +146,20 @@ void WS2812_send(uint32_t *rgb, uint16_t len)
 	DMA_Cmd(DMA1_Channel4, DISABLE); 			// disable DMA channel 6
     DMA_ClearFlag(DMA1_FLAG_TC4 | DMA1_FLAG_HT4 | DMA1_FLAG_GL4 | DMA1_FLAG_TE4);// clear DMA1 Channel 6 transfer complete flag
 }
+
+void WS2812_send(uint32_t *rgb, uint16_t len)
+{
+    int i = 0;
+    uint8_t buff[128] = {0};
+
+    for (i = 0; i < len; i++)
+    {
+        buff[i*3] = rgb[i]>>16 & 0xff;
+        buff[i*3 + 1] = rgb[i]>>8 & 0xff;
+        buff[i*3 + 2] = rgb[i] & 0xff;
+    }
+
+    WS2812_send_internal((uint8_t(*)[ 3 ])buff, len);
+}
+
 
