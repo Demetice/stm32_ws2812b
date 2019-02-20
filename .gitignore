@@ -4,6 +4,7 @@
 *.hex
 *.axf
 *.map
+*.uvgui.*
 
 *.scvd
 *.__i

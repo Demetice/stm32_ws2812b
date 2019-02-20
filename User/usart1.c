@@ -1,6 +1,5 @@
 #include "usart.h"
 
-uint8_t UART1_RXBUFFER[USART_REC_LEN];
 #define USART1_TX GPIO_Pin_9
 #define USART1_RX GPIO_Pin_10
 
@@ -10,47 +9,16 @@ uint8_t UART1_RXBUFFER[USART_REC_LEN];
 
 /****************static*****************/
 //串口接收DMA缓存
-static uint8_t Uart_Rx[UART_RX_LEN] = {0};
+uint8_t Uart_Rx[UART_RX_LEN] = {0};
+USART1_MSG_HANDLE_STATE_E g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
+uint16_t g_ucUartMsgLen = 0;
+
 
 /****************extern*****************/
-
-static void DMA_config()
-{
-    DMA_InitTypeDef DMA_InitStructure;
-    //串口收DMA配置
-    //启动DMA时钟
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-    //DMA1通道5配置
-    DMA_DeInit(DMA1_Channel3);
-    //外设地址
-    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&USART1->RDR);
-    //内存地址
-    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)Uart_Rx;
-    //dma传输方向单向
-    DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-    //设置DMA在传输时缓冲区的长度
-    DMA_InitStructure.DMA_BufferSize = UART_RX_LEN;
-    //设置DMA的外设递增模式，一个外设
-    DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-    //设置DMA的内存递增模式
-    DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    //外设数据字长
-    DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-    //内存数据字长
-    DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-    //设置DMA的传输模式
-    DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-    //设置DMA的优先级别
-    DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
-    //设置DMA的2个memory中的变量互相访问
-    DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-    DMA_Init(DMA1_Channel3,&DMA_InitStructure);
-    //使能通道5
-    DMA_Cmd(DMA1_Channel3,ENABLE);
-}
+extern void WS2812_send_internal(uint8_t (*color)[3], uint16_t len);
 
 //---------------------串口功能配置---------------------
-void USART1_DMA_Config() 
+void USART1_DMA_Config(void) 
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     USART_InitTypeDef USART_InitStructure; //定义串口初始化结构体
@@ -68,7 +36,7 @@ void USART1_DMA_Config()
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//定义管脚9的模式
     GPIO_Init(GPIOA, &GPIO_InitStructure); //调用函数，把结构体参数输入进行初始化????????
 
-    DMA_config();
+    //DMA_config();
     /*串口通讯参数设置*/
     USART_InitStructure.USART_BaudRate = 115200;//9600; //波特率
     USART_InitStructure.USART_WordLength = USART_WordLength_8b; //数据位8位
@@ -80,14 +48,10 @@ void USART1_DMA_Config()
     USART_Init(USART1, &USART_InitStructure);
 
     //TXE发送中断,TC传输完成中断,RXNE接收中断,PE奇偶错误中断,可以是多个
-    USART_ITConfig(USART1,USART_IT_TC,DISABLE);
-    USART_ITConfig(USART1,USART_IT_IDLE,ENABLE);
-    USART1->ICR |= 1<<4; //必须先清除IDLE中断，否则会一直进IDLE中断
-    USART_ITConfig(USART1, USART_IT_RXNE, DISABLE);
+    USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);           //使能接收中断
     //采用DMA方式发送
     //USART_DMACmd(USART1,USART_DMAReq_Tx,ENABLE);
-    //采用DMA方式接收
-    USART_DMACmd(USART1,USART_DMAReq_Rx,ENABLE);
+
     USART_Cmd(USART1, ENABLE);
 
     /* USART1的NVIC中断配置 */
@@ -116,25 +80,46 @@ void USART1_Send_Bytes(unsigned char *Data, int len) //发送字符串；
 //串口1接收中断
 void USART1_IRQHandler(void)
 {
-    uint32_t rgb = 0;
-    uint16_t Len = 0;
-    if(USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)
+    static uint8_t data = 0, data2 = 0;
+    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
     {
-        USART1->ICR |= 1<<4; //清除中断
-        USART_ReceiveData(USART1);
-        Len = UART_RX_LEN - DMA_GetCurrDataCounter(DMA1_Channel3);
-        USART1_Send_Bytes(Uart_Rx, Len);
-
-        if(Len >= 3)
+        data = (uint8_t)USART_ReceiveData(USART1);
+        if (g_eUartState == E_USART1_MSG_HANDLE_STATE_HANDLING)
         {
-            rgb = Uart_Rx[1] << 16 | Uart_Rx[0] << 8 | Uart_Rx[2];
-            WS2812_send(&rgb, 1);
+            if (data2 == UART_STOP_BYTE_ONE 
+                && data == UART_STOP_BYTE_TWO)
+            {
+                g_eUartState = E_USART1_MSG_HANDLE_STATE_COMPLETE;
+            }
+            else
+            {
+                Uart_Rx[g_ucUartMsgLen++] = data;
+                data2 = data;
+            }
+                        
         }
+        else if(g_eUartState == E_USART1_MSG_HANDLE_STATE_IDLE
+            && data == UART_START_BYTE)
+        {
+            g_eUartState = E_USART1_MSG_HANDLE_STATE_HANDLING;
+            g_ucUartMsgLen = 0;
+        }
+    }
+}
+
+void USART1_MsgHandle(void)
+{
+    SMART_EYE_LED_S *pstVal = (SMART_EYE_LED_S *) Uart_Rx;
+
+    if (pstVal->num > 2) pstVal->num = 2;
+
+    if (g_eUartState == E_USART1_MSG_HANDLE_STATE_COMPLETE)
+    {
+        USART1_Send_Bytes(Uart_Rx, g_ucUartMsgLen);
+
+        WS2812_send_internal((uint8_t (*)[3])pstVal->color, pstVal->num);
         
-        DMA_Cmd(DMA1_Channel3,DISABLE);
-        DMA_ClearFlag(DMA1_FLAG_GL3);
-        DMA_SetCurrDataCounter(DMA1_Channel3,UART_RX_LEN);
-        DMA_Cmd(DMA1_Channel3,ENABLE);
+        g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
     }
 }
 

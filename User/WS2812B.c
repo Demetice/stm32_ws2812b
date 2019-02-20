@@ -1,22 +1,9 @@
 #include "WS2812B.h"
-/* Buffer that holds one complete DMA transmission
- * 
- * Ensure that this buffer is big enough to hold
- * all data bytes that need to be sent
- * 
- * The buffer size can be calculated as follows:
- * number of LEDs * 24 bytes + 42 bytes
- * 
- * This leaves us with a maximum string length of
- * (2^16 bytes per DMA stream - 42 bytes)/24 bytes per LED = 2728 LEDs
- */
-//#define TIM3_CCR3_Address 0x4000043c 	// physical memory address of Timer 3 CCR1 register
-//#define TIM3_CCR1_Address 0x40000434	// physical memory address of Timer 3 CCR1 register
-#define TIM2_CCR1_Address (uint32_t)&TIM3->CCR1
-	
-#define TIMING_ONE  40
-#define TIMING_ZERO 20
- uint16_t LED_BYTE_Buffer[300];
+#include "string.h"
+
+#define TIMING_ONE  44
+#define TIMING_ZERO 15
+uint16_t LED_BYTE_Buffer[300];
 //---------------------------------------------------------------//
 
 void Timer2_init(void)
@@ -25,7 +12,6 @@ void Timer2_init(void)
     TIM_OCInitTypeDef  TIM_OCInitStructure;
     GPIO_InitTypeDef GPIO_InitStructure;
     DMA_InitTypeDef DMA_InitStructure;
-    NVIC_InitTypeDef NVIC_InitStructure;
 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 	/* GPIOA Configuration: TIM2 Channel 1 as alternate function push-pull */
@@ -41,7 +27,7 @@ void Timer2_init(void)
 	/* Compute the prescaler value */
 	//PrescalerValue = (uint16_t) (SystemCoreClock / 24000000) - 1;
 	/* Time base configuration */
-	TIM_TimeBaseStructure.TIM_Period = 60-1; // 800kHz 
+	TIM_TimeBaseStructure.TIM_Period = 59; // 800kHz 
 	TIM_TimeBaseStructure.TIM_Prescaler = 0;
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -65,7 +51,7 @@ void Timer2_init(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&TIM3->CCR1;	// physical address of Timer 3 CCR1
 	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)LED_BYTE_Buffer;		// this is the buffer memory 
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;						// data shifted from memory to peripheral
-	DMA_InitStructure.DMA_BufferSize = 42;
+	DMA_InitStructure.DMA_BufferSize = sizeof(LED_BYTE_Buffer);
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;					// automatically increase buffer index
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -78,11 +64,11 @@ void Timer2_init(void)
     DMA_ClearFlag(DMA1_FLAG_TC4 | DMA1_FLAG_HT4 | DMA1_FLAG_GL4 | DMA1_FLAG_TE4);
 
     /* TIM3 CC1 DMA Request enable */
-    TIM_DMACmd(TIM3, TIM_DMA_Update, ENABLE);
+    //TIM_DMACmd(TIM3, TIM_DMA_Update, ENABLE);
     TIM_DMACmd(TIM3, TIM_DMA_CC1, ENABLE);
     
     /* TIM1 计算器使能*/
-    TIM_Cmd(TIM3, ENABLE);
+    //TIM_Cmd(TIM3, ENABLE);
     /* TIM1 主输出使能 */
     TIM_CtrlPWMOutputs(TIM3, ENABLE);
 }
@@ -97,69 +83,49 @@ void Timer2_init(void)
  */
 void WS2812_send_internal(uint8_t (*color)[3], uint16_t len)
 {
-    uint8_t i;
-    uint16_t memaddr;
-    uint16_t buffersize;
-    buffersize = (len*24)+43;   // number of bytes needed is #LEDs * 24 bytes + 42 trailing bytes
-    memaddr = 0;                // reset buffer memory index
+    uint8_t i,j;
+	uint16_t memaddr;
+	uint16_t buffersize;
+	buffersize = (len*24)+43;	// number of bytes needed is #LEDs * 24 bytes + 42 trailing bytes
+	memaddr = 0;				// reset buffer memory index
 
-    while (len)
-    {   
-        for(i=0; i<8; i++) // GREEN data
-        {
-            LED_BYTE_Buffer[memaddr] = ((color[len-1][1]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
-            memaddr++;
-        }
-        for(i=0; i<8; i++) // RED
-        {
-                LED_BYTE_Buffer[memaddr] = ((color[len-1][0]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
-                memaddr++;
-        }
-        for(i=0; i<8; i++) // BLUE
-        {
-                LED_BYTE_Buffer[memaddr] = ((color[len-1][2]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
-                memaddr++;
-        }
-        len--;
-    }
-    //===================================================================// 
-    //bug：最后一个周期波形不知道为什么全是高电平，故增加一个波形
-    LED_BYTE_Buffer[memaddr] = ((color[len][2]<<8) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
-    //===================================================================// 
-
-	memaddr++;	
-	while(memaddr < buffersize)
-	{
-		LED_BYTE_Buffer[memaddr] = 0;
-		memaddr++;
+	for (j = 0;j < len; ++j)
+	{	
+		for(i=0; i<8; i++) // GREEN data
+		{
+			LED_BYTE_Buffer[memaddr] = ((color[j][1]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+			memaddr++;
+		}
+		for(i=0; i<8; i++) // RED
+		{
+				LED_BYTE_Buffer[memaddr] = ((color[j][0]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+				memaddr++;
+		}
+		for(i=0; i<8; i++) // BLUE
+		{
+				LED_BYTE_Buffer[memaddr] = ((color[j][2]<<i) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+				memaddr++;
+		}
 	}
-
-    DMA_ClearFlag(DMA1_FLAG_TC4 | DMA1_FLAG_HT4 | DMA1_FLAG_GL4 | DMA1_FLAG_TE4);// clear DMA1 Channel 6 transfer complete flag
-    //DMA_ITConfig( DMA1_Channel4, DMA_IT_TC, ENABLE );
-	DMA_SetCurrDataCounter(DMA1_Channel4, buffersize); 	// load number of bytes to be transferred
-	DMA_Cmd(DMA1_Channel4, ENABLE); 			// enable DMA channel 6
-	TIM_Cmd(TIM3, ENABLE); 						// enable Timer 3
-	TIM_CtrlPWMOutputs(TIM3, ENABLE);
-	while(!DMA_GetFlagStatus(DMA1_FLAG_TC4)) ; 	// wait until transfer complete
-	TIM_Cmd(TIM3, DISABLE); 	// disable Timer 3
-	TIM_CtrlPWMOutputs(TIM3, DISABLE);
-	DMA_Cmd(DMA1_Channel4, DISABLE); 			// disable DMA channel 6
-    DMA_ClearFlag(DMA1_FLAG_TC4 | DMA1_FLAG_HT4 | DMA1_FLAG_GL4 | DMA1_FLAG_TE4);// clear DMA1 Channel 6 transfer complete flag
-}
-
-void WS2812_send(uint32_t *rgb, uint16_t len)
-{
-    int i = 0;
-    uint8_t buff[128] = {0};
-
-    for (i = 0; i < len; i++)
+//===================================================================//	
+//bug：最后一个周期波形不知道为什么全是高电平，故增加一个波形
+  	LED_BYTE_Buffer[memaddr] = ((color[j - 1][2]<<8) & 0x0080) ? TIMING_ONE:TIMING_ZERO;
+//===================================================================//	
+	  memaddr++;	
+	while(memaddr < buffersize)
     {
-        buff[i*3] = rgb[i]>>16 & 0xff;
-        buff[i*3 + 1] = rgb[i]>>8 & 0xff;
-        buff[i*3 + 2] = rgb[i] & 0xff;
+        LED_BYTE_Buffer[memaddr] = 0;
+        memaddr++;
     }
 
-    WS2812_send_internal((uint8_t(*)[ 3 ])buff, len);
+    TIM_Cmd(TIM3, ENABLE);                      // enable Timer 3
+    DMA_SetCurrDataCounter(DMA1_Channel4, buffersize);  // load number of bytes to be transferred
+    DMA_Cmd(DMA1_Channel4, ENABLE);             // enable DMA channel 6
+    while(!DMA_GetFlagStatus(DMA1_FLAG_TC4)) ;  // wait until transfer complete
+    TIM3->CCR1 = 0;
+    TIM_Cmd(TIM3, DISABLE);     // disable Timer 3
+    DMA_Cmd(DMA1_Channel4, DISABLE);            // disable DMA channel 6
+    DMA_ClearFlag(DMA1_FLAG_TC4);               // clear DMA1 Channel 6 transfer complete flag
 }
 
 
