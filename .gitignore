@@ -11,3 +11,5 @@
 *.zip
 *.TMP
 *.orig
+*.dep
+Out
