@@ -1,12 +1,5 @@
 #include "usart.h"
 
-#define USART1_TX GPIO_Pin_9
-#define USART1_RX GPIO_Pin_10
-
-//串口接收DMA缓存
-#define UART_RX_LEN 128
-
-
 /****************static*****************/
 //串口接收DMA缓存
 uint8_t Uart_Rx[UART_RX_LEN] = {0};
@@ -111,10 +104,17 @@ void USART1_MsgHandle(void)
 {
     SMART_EYE_LED_S *pstVal = (SMART_EYE_LED_S *) Uart_Rx;
 
-    if (pstVal->num > 2) pstVal->num = 2;
-
     if (g_eUartState == E_USART1_MSG_HANDLE_STATE_COMPLETE)
     {
+        if (pstVal->num > MAX_WS2812B_NUM) pstVal->num = MAX_WS2812B_NUM;
+
+        if (pstVal->num * 3 + 2 > g_ucUartMsgLen)
+        {
+            printf("error cmd len\r\n");
+            g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
+            return;
+        }
+    
         USART1_Send_Bytes(Uart_Rx, g_ucUartMsgLen);
 
         WS2812_send_internal((uint8_t (*)[3])pstVal->color, pstVal->num);
@@ -122,8 +122,6 @@ void USART1_MsgHandle(void)
         g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
     }
 }
-
-
 
 //////////////////////////////////////////////////////////////////
 //加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
