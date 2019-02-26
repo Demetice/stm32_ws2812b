@@ -1,4 +1,7 @@
 #include "usart.h"
+#include "WS2812B.h"
+#include "string.h"
+#include "stdlib.h"
 
 /****************static*****************/
 //串口接收DMA缓存
@@ -6,9 +9,8 @@ uint8_t Uart_Rx[UART_RX_LEN] = {0};
 USART1_MSG_HANDLE_STATE_E g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
 uint16_t g_ucUartMsgLen = 0;
 
-
-/****************extern*****************/
-extern void WS2812_send_internal(uint8_t (*color)[3], uint16_t len);
+//#define LOGD(x, ...)  
+#define LOGD printf  
 
 //---------------------串口功能配置---------------------
 void USART1_DMA_Config(void) 
@@ -83,6 +85,7 @@ void USART1_IRQHandler(void)
                 && data == UART_STOP_BYTE_TWO)
             {
                 g_eUartState = E_USART1_MSG_HANDLE_STATE_COMPLETE;
+                LOGD("become complete.\n");
             }
             else
             {
@@ -102,6 +105,7 @@ void USART1_IRQHandler(void)
 
 void USART1_MsgHandle(void)
 {
+    int i = 0;    
     SMART_EYE_LED_S *pstVal = (SMART_EYE_LED_S *) Uart_Rx;
 
     if (g_eUartState == E_USART1_MSG_HANDLE_STATE_COMPLETE)
@@ -110,16 +114,21 @@ void USART1_MsgHandle(void)
 
         if (pstVal->num * 3 + 2 > g_ucUartMsgLen)
         {
-            printf("error cmd len\r\n");
+            printf("error cmd len, become idle\r\n");
             g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
             return;
-        }
-    
-        USART1_Send_Bytes(Uart_Rx, g_ucUartMsgLen);
+        }         
 
-        WS2812_send_internal((uint8_t (*)[3])pstVal->color, pstVal->num);
+        ws281x_Off(pstVal->num);
+        ws281x_send(pstVal->color, pstVal->num);
         
+        LOGD("Receive data: ");
+        for (i = 0; i < pstVal->num * 3; ++i)
+        {
+            LOGD("%-03X", pstVal->color[i]);
+        }
         g_eUartState = E_USART1_MSG_HANDLE_STATE_IDLE;
+        LOGD("\nbecome idle.\n");
     }
 }
 

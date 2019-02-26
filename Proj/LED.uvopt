@@ -258,8 +258,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\User\WS2812B.c</PathWithFileName>
-      <FilenameWithoutPath>WS2812B.c</FilenameWithoutPath>
+      <PathWithFileName>..\User\usart1.c</PathWithFileName>
+      <FilenameWithoutPath>usart1.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -270,8 +270,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\User\usart1.c</PathWithFileName>
-      <FilenameWithoutPath>usart1.c</FilenameWithoutPath>
+      <PathWithFileName>..\User\ws281x.c</PathWithFileName>
+      <FilenameWithoutPath>ws281x.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -426,14 +426,14 @@
               <FilePath>..\User\main.c</FilePath>
             </File>
             <File>
-              <FileName>WS2812B.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\WS2812B.c</FilePath>
-            </File>
-            <File>
               <FileName>usart1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>ws281x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\ws281x.c</FilePath>
             </File>
           </Files>
         </Group>

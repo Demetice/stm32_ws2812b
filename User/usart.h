@@ -17,8 +17,6 @@
 //´®¿Ú½ÓÊÕDMA»º´æ
 #define UART_RX_LEN 128
 
-#define MAX_WS2812B_NUM 8
-
 typedef enum
 {
     E_USART1_MSG_HANDLE_STATE_IDLE = 0,

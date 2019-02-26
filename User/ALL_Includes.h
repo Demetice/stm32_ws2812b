@@ -10,13 +10,8 @@
 #include "MyType.h"
 #include "delay.h"
 #include "led.h"
-#include "WS2812B.h"
-#include "dmx512.h"
 #include "usart.h"
-
-
-
-
+#include "ws281x.h"
 
 #endif
 
